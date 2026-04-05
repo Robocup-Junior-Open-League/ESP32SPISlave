@@ -27,7 +27,7 @@
 ARDUINO_ESP32_SPI_SLAVE_NAMESPACE_BEGIN
 
 static constexpr const char *TAG = "ESP32SPISlave";
-static constexpr int SPI_SLAVE_TASK_STASCK_SIZE = 1024 * 2;
+static constexpr int SPI_SLAVE_TASK_STASCK_SIZE = 1024 * 8;
 static constexpr int SPI_SLAVE_TASK_PRIORITY = 5;
 
 static QueueHandle_t s_trans_queue_handle {NULL};
@@ -123,7 +123,7 @@ void spi_slave_task(void *arg)
     spi_slave_context_t *ctx = static_cast<spi_slave_context_t*>(arg);
 
     // initialize spi slave
-    esp_err_t err = spi_slave_initialize(ctx->host, &ctx->bus_cfg, &ctx->if_cfg, SPI_DMA_DISABLED);
+    esp_err_t err = spi_slave_initialize(ctx->host, &ctx->bus_cfg, &ctx->if_cfg, SPI_DMA_CH_AUTO);
     assert(err == ESP_OK);
 
     // initialize queues
